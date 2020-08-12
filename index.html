@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="src/style.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Spartan&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/bb7aaf7d17.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>Final PlusProject</title>
+</head>
+<body>
+<div class="container">
+    <header>
+        <form id = "search-form">
+        <input 
+                type="text" 
+                placeholder="Enter your City..."  
+                  autocomplete="off",
+                  id = "entered-city"
+                />
+        <input 
+                type="submit" 
+                value="👍"
+                autofocus="on"
+                />
+      <input type="submit" id="current-button" value="Current City 📍"/>
+        </form>
+    </header>
+
+    <div class="Temp">
+        <h1 id="current-time"></h1>
+        <h2 id="description">
+        
+        </h2>
+        <img src="" id="icon"/> 
+        <h3 id="temp-now"></h3>
+        <div class="units"><a href="#" id="celcius-link" class="active">°C</a> | <a href="" id="fahrenheit-link">°F</a></div>
+        <div class="row">
+            <div class="col-2"></div>
+            Humidity:<div class="col-2" id="humidity">
+            </div>%
+        <div class="col-2"></div>
+            Wind:<div class="col-2" id="wind-speed">
+            </div>km/h
+        </div>
+    </div>
+        <p class="chosenCity" id="new-city"></p>
+      </div>
+      <ul>
+          <li>Last updated at: <span id="date"></span></li>
+      </ul>
+
+
+      <div class="row weather-forcast" id="forecast">
+        <div class="col-2">
+                    <h3>
+                            Sun
+                        </h3>
+    <img src="" class="forecast-icon"/>
+        <div class="weather-forecast-temp">
+                <strong>°</strong>°
+        </div>
+</div>
+        <div class="col-2">
+                   <h3>
+                        Mon
+                    </h3>
+        <img src="" class="forecast-icon"/>
+    <div class="weather-forecast-temp">
+                <strong>°</strong> °
+        </div>
+    </div>
+        <div class="col-2">
+            <h3>
+                Tue
+            </h3>
+        <img src="" class="forecast-icon"/>
+        <div class="weather-forecast-temp">
+        <strong>°</strong> °
+    </div>
+</div>
+<div class="col-2">
+        <h3>
+            Wed
+        </h3>
+                <img src="" class="forecast-icon"/>
+        <div class="weather-forecast-temp">
+        <strong>°</strong> °
+        </div>
+    </div>
+    <div class="col-2">
+    <h3>
+    Thu
+    </h3>
+        <img src="" class="forecast-icon"/>
+    <div class="weather-forecast-temp">
+    <strong>°</strong> °
+</div>
+    </div>
+            <div class="col-2">
+                <h3>
+                Fri
+            </h3>
+    <img src="" class="forecast-icon"/>
+        <div class="weather-forecast-temp">
+   <strong>°</strong> °
+    </div>
+    </div>
+                    </div>
+                </div>
+    
+    
+</div> 
+
+<div class="code">
+    <a href="https://github.com/cullencat/Final-PlusProject" target="_blank">Open-source code</a> by Catherine Cullen 
+  </div>
+
+    <script src="src/index.js"></script>
+</body>
+</html>
