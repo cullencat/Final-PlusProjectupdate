@@ -186,8 +186,5 @@ function displayForecast(response) {
 }
 
 
-let city = document.querySelector("search-form");
-city.addEventListener("submit", submitCity);
-
 
 
