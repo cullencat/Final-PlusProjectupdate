@@ -40,66 +40,58 @@ function formatDate(timestamp) {
     h1Element.innerHTML = `${currentDay}, ${currentMonth} ${currentDate}, ${currentYear}, ${currentHour}:${currentMinute}`;
 }
 
-function formatHours(timestamp) {
-  let date = new Date(timestamp);
-  let hours = date.getHours();
-  if (hours < 10) {
-    hours = `0${hours}`;
-  }
-  let minutes = date.getMinutes();
-  if (minutes < 10) {
-    minutes = `0${minutes}`;
-  }
+// fahrenheit button
 
-  return `${hours}:${minutes}`;
-}
-
-function displayWeatherCondition(response) {
-  let tempElement = document.querySelector("#temp-now");
-  let tempNow = Math.round(response.data.main.temp);
-    tempElement.innerHTML = `${tempNow}°C`;
+function displayFahrenheitTemp(event) {
+  event.preventDefault();
+  let fahrenheitTemp = (celciusTemp * 9) / 5 + 32;
+  let temperatureElement = document.querySelector("#temperature");
+  temperatureElement.innerHTML = Math.round(fahrenheitTemp);
 }
 
 // celcius button
 
 function displayCelciusTemp(event) {
-    event.preventDefault();
-    celsiusLink.classList.add("active");
-    fahrenheitLink.classList.remove("active");
-    let temperatureElement = document.querySelector("#temperature");
-    let celciusTemp = response.main.data.temp;
-    temperatureElement.innerHTML = Math.round(celciusTemp);
-
-}
-
-    let celciusLink = document.querySelector("#celcius-link");
-      celciusLink.addEventListener("click", displayCelciusTemp);
-      let celciusTemp = null;
-
-// fahrenheit button
-
-function displayFahrenheitTemp(event) {
   event.preventDefault();
-  celsiusLink.classList.remove("active");
-  fahrenheitLink.classList.add("active");
-  let celciusTemp = response.main.data.temp;
-  let fahrenheitTemp = (celciusTemp*9) / 5 +32;
   let temperatureElement = document.querySelector("#temperature");
-  temperatureElement.innerHTML = Math.round(fahrenheitTemp);
+  temperatureElement.innerHTML = Math.round(celciusTemp);
+
 }
-    let fahrenheitLink = document.querySelector("#fahrenheit-link");
-      fahrenheitLink.addEventListener("click", displayFahrenheitTemp);
 
-// api data
+// search city
 
-let apiKey = "e6d85b345de0047406ef7a81579b2fba";
-let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=Dublin,ie&appid=${apiKey}&units=metric`;
+function submitCity(city) {
+  let apiKey = "e6d85b345de0047406ef7a81579b2fba";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+    axios.get(apiUrl).then(displayTemperature);
 
+    apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
+      axios.get(apiUrl).then(displayForecast);
+}
 
-axios.get(apiUrl).then(displayTemperature);
+function handleSubmit(event) {
+  event.preventDefault();
+  let city = document.querySelector("#entered-city");
+  searchCity(city.value);
+}
 
+// current location
 
+function retrievePosition(position) {
+  let apiKey = "e6d85b345de0047406ef7a81579b2fba";
+  let latitude = position.coords.latitude;
+  let longitude = position.coords.longitude;
+  let units = "metric";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=${units}`;
+      axios.get(apiUrl).then(displayTemperature);
+  apiUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=${units}&appid=${apiKey}`;
+      axios.get(`${apiUrl}`).then(displayForecast);
+}
 
+function getCurrentLocation(event) {
+  event.preventDefault();
+  navigator.geolocation.getCurrentPosition(retrievePosition);
+}
 
 //
 
@@ -124,6 +116,47 @@ function displayTemperature(response) {
 
   celciusTemp = response.main.data.temp;
 }
+
+
+let form = document.querySelector("#search-form");
+form.addEventListener("submit", handleSubmit);
+
+
+let fahrenheitLink = document.querySelector("#fahrenheit-link");
+fahrenheitLink.addEventListener("click", displayFahrenheitTemp);
+
+let celciusLink = document.querySelector("#celcius-link");
+celciusLink.addEventListener("click", displayCelciusTemp);
+
+let celciusTemp = null;
+
+let currentButton = document.querySelector("#current-button");
+currentButton.addEventListener("click", getCurrentLocation);
+
+searchCity("Dublin");
+
+
+function formatHours(timestamp) {
+  let date = new Date(timestamp);
+  let hours = date.getHours();
+  if (hours < 10) {
+    hours = `0${hours}`;
+  }
+  let minutes = date.getMinutes();
+  if (minutes < 10) {
+    minutes = `0${minutes}`;
+  }
+
+  return `${hours}:${minutes}`;
+}
+
+function displayWeatherCondition(response) {
+  let tempElement = document.querySelector("#temp-now");
+  let tempNow = Math.round(response.data.main.temp);
+    tempElement.innerHTML = `${tempNow}°C`;
+}
+
+
 
 //
 
@@ -152,54 +185,9 @@ function displayForecast(response) {
                 }
 }
 
-// search city
-
-function submitCity(city) {
-  let apiKey = "e6d85b345de0047406ef7a81579b2fba";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
-    axios.get(apiUrl).then(displayTemperature);
-
-    apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
-      axios.get(apiUrl).then(displayForecast);
-}
-
-function handleSubmit(event) {
-  event.preventDefault();
-  let city = document.querySelector("#entered-city");
-  searchCity(city.value);
-}
 
 let city = document.querySelector("search-form");
 city.addEventListener("submit", submitCity);
 
-searchCity("#new-city");
 
-// current location
-
-function retrievePosition(position) {
-  let apiKey = "e6d85b345de0047406ef7a81579b2fba";
-  let latitude = position.coords.latitude;
-  let longitude = position.coords.longitude;
-  let units = "metric";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=${units}`;
-      axios.get(apiUrl).then(displayTemperature);
-  apiUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=${units}&appid=${apiKey}`;
-      axios.get(`${apiUrl}`).then(displayForecast);
-}
-
-function getCurrentLocation(event) {
-  event.preventDefault();
-  navigator.geolocation.getCurrentPosition(retrievePosition);
-}
-
-let currentButton = document.querySelector("#current-button");
-currentButton.addEventListener("click", getCurrentLocation);
-
-//
-
-
-let form = document.querySelector("#search-form");
-form.addEventListener("submit", handleSubmit);
-
-//
 
