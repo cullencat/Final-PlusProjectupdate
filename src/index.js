@@ -133,7 +133,7 @@ let celciusTemp = null;
 let currentButton = document.querySelector("#current-button");
 currentButton.addEventListener("click", getCurrentLocation);
 
-searchCity("Dublin");
+submitCity("Dublin");
 
 
 function formatHours(timestamp) {
