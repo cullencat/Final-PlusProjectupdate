@@ -106,7 +106,7 @@ function displayTemperature(response) {
       humidityElement.innerHTML = response.data.main.humidity;
   let windElement = document.querySelector("#wind-speed");
       windElement.innerHTML = Math.round(response.data.wind.speed);
-  let dateElement = document.querySelector("#date");
+  let dateElement = document.querySelector("#last-update");
       dateElement.innerHTML = formatDate(response.data.dt * 1000);
   let iconElement = document.querySelector("#icon");
       iconElement.setAttribute("src", `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`);
