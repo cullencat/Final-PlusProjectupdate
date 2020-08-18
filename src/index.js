@@ -1,6 +1,6 @@
 function formatDate(timestamp) {
   let now = new Date(timestamp);
-  let h1Element = document.querySelector("h1");
+  let h1 = document.querySelector("h1");
 
   let days = [
   "Sun",
@@ -37,7 +37,13 @@ function formatDate(timestamp) {
           currentMinute = `0${currentMinute}`;
       }
 
-    h1Element.innerHTML = `${currentDay}, ${currentMonth} ${currentDate}, ${currentYear}, ${currentHour}:${currentMinute}`;
+    h1.innerHTML = `${currentDay}, ${currentMonth} ${currentDate}, ${currentYear}, ${currentHour}:${currentMinute}`;
+}
+
+function displayWeatherCondition(response) {
+  let tempElement = document.querySelector("#temp-now");
+  let tempNow = Math.round(response.data.main.temp);
+    tempElement.innerHTML = `${tempNow}°C`;
 }
 
 // fahrenheit button
@@ -60,32 +66,27 @@ function displayCelciusTemp(event) {
 
 // search city
 
-function submitCity(city) {
+function searchCity(city) {
   let apiKey = "e6d85b345de0047406ef7a81579b2fba";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
     axios.get(apiUrl).then(displayTemperature);
 
-    apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
-      axios.get(apiUrl).then(displayForecast);
+   // apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
+    //  axios.get(apiUrl).then(displayForecast);
 }
 
-function handleSubmit(event) {
+function submit(event) {
   event.preventDefault();
   let city = document.querySelector("#entered-city");
-  searchCity(city.value);
+  search(city.value);
 }
 
 // current location
 
 function retrievePosition(position) {
   let apiKey = "e6d85b345de0047406ef7a81579b2fba";
-  let latitude = position.coords.latitude;
-  let longitude = position.coords.longitude;
-  let units = "metric";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=${units}`;
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}&units=metric`;
       axios.get(apiUrl).then(displayTemperature);
-  apiUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=${units}&appid=${apiKey}`;
-      axios.get(`${apiUrl}`).then(displayForecast);
 }
 
 function getCurrentLocation(event) {
@@ -106,7 +107,7 @@ function displayTemperature(response) {
       humidityElement.innerHTML = response.data.main.humidity;
   let windElement = document.querySelector("#wind-speed");
       windElement.innerHTML = Math.round(response.data.wind.speed);
-  let dateElement = document.querySelector("#last-update");
+  let dateElement = document.querySelector("#date");
       dateElement.innerHTML = formatDate(response.data.dt * 1000);
   let iconElement = document.querySelector("#icon");
       iconElement.setAttribute("src", `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`);
@@ -119,7 +120,7 @@ function displayTemperature(response) {
 
 
 let form = document.querySelector("#search-form");
-form.addEventListener("submit", handleSubmit);
+form.addEventListener("submit", submit);
 
 
 let fahrenheitLink = document.querySelector("#fahrenheit-link");
@@ -133,58 +134,4 @@ let celciusTemp = null;
 let currentButton = document.querySelector("#current-button");
 currentButton.addEventListener("click", getCurrentLocation);
 
-submitCity("Dublin");
-
-
-function formatHours(timestamp) {
-  let date = new Date(timestamp);
-  let hours = date.getHours();
-  if (hours < 10) {
-    hours = `0${hours}`;
-  }
-  let minutes = date.getMinutes();
-  if (minutes < 10) {
-    minutes = `0${minutes}`;
-  }
-
-  return `${hours}:${minutes}`;
-}
-
-function displayWeatherCondition(response) {
-  let tempElement = document.querySelector("#temp-now");
-  let tempNow = Math.round(response.data.main.temp);
-    tempElement.innerHTML = `${tempNow}°C`;
-}
-
-
-
-//
-
-function displayForecast(response) {
-  let forecastElement = document.querySelector("#forecast");
-  forecastElement.innerHTML = null;
-  let forecast = null;
-
-  for (let index = 0; index < 5; index++) {
-    forecast = response.data.list[index];
-    forecastElement.innerHTML += 
-
-    ` <div class="col-2">
-              <h3>
-                ${formatHours(forecast.dt * 1000)}
-              </h3>
-              <img src="https://openweathermap.org/img/wn/${
-                forecast.weather[0].icon
-              }@2x.png" />
-              <div class="weather-forecast-temp">
-                <strong>${Math.round(
-                  forecast.main.temp_max
-                )}°</strong>${Math.round(forecast.main.temp_min)}°
-              </div>
-            </div>`;
-                }
-}
-
-
-
-
+searchCity("Dublin");
