@@ -115,7 +115,7 @@ function displayTemperature(response) {
       forecastIconElement.setAttribute("src", `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`);
   
 
-  celciusTemp = response.main.data.temp;
+  celciusTemp = response.data.main.temp;
 }
 
 
